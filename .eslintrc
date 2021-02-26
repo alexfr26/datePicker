@@ -1,0 +1,26 @@
+{
+  "extends": ["eslint:recommended", "plugin:prettier/recommended", "plugin:react/recommended"],
+  "plugins": ["react"],
+
+  "env": {
+    "es6": true,
+    "browser": true
+  },
+
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+
+  "ignorePatterns": ["webpack.config.js"],
+
+  "rules": {
+    "no-console": "off",
+    "prettier/prettier": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off"
+  }
+}
