@@ -1,6 +1,8 @@
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import { CONSTANTS } from '../../lib';
+import { checkPicked } from './helper';
 
 // Components
 import { Cell } from './Cell';
@@ -11,53 +13,6 @@ const StyledCalendar = styled.table`
     margin: 0 auto;
     border-spacing: 0 5px;
 `;
-
-const checkPicked = (cellKey, pickedData, dpType) => {
-    switch (dpType) {
-        case 'single':
-            return cellKey === pickedData[0].timeStamp ? 'picked' : '';
-        case 'range':
-            const len = pickedData.length;
-            if (len === 1) {
-                return cellKey === pickedData[0].timeStamp ? 'pickedStart' : '';
-            }
-
-            if (len === 2) {
-                return cellKey === pickedData[0].timeStamp
-                    ? 'pickedStart'
-                    : cellKey === pickedData[1].timeStamp
-                    ? 'pickedEnd'
-                    : cellKey > pickedData[0].timeStamp &&
-                      cellKey < pickedData[1].timeStamp
-                    ? 'pickedInRange'
-                    : '';
-            }
-        case 'multiRange':
-            let classes = '';
-            for (let tuple of pickedData) {
-                const len = tuple.length;
-
-                if (len === 1) {
-                    classes += cellKey === tuple[0].timeStamp ? ' pickedStart' : '';
-                }
-
-                if (len === 2) {
-                    classes +=
-                        cellKey === tuple[0].timeStamp
-                            ? ' pickedStart'
-                            : cellKey === tuple[1].timeStamp
-                            ? ' pickedEnd'
-                            : cellKey > tuple[0].timeStamp && cellKey < tuple[1].timeStamp
-                            ? ' pickedInRange'
-                            : '';
-                }
-            }
-
-            return classes;
-        default:
-            return '';
-    }
-};
 
 const renderCells = (cells, pickedCells, dpType, handlerFn) => {
     return cells.map((props) => {
@@ -99,6 +54,7 @@ const simpleCellsRender = (cells, props) => {
 };
 
 const Calendar = ({ dates, onDatePicked, pickedDates, datePickerType, ...props }) => {
+    console.log(dates);
     return (
         <StyledCalendar {...props}>
             <Row as="thead">
@@ -109,6 +65,10 @@ const Calendar = ({ dates, onDatePicked, pickedDates, datePickerType, ...props }
             </Row>
         </StyledCalendar>
     );
+};
+
+Calendar.propTypes = {
+    dates: PropTypes.array.isRequired,
 };
 
 export { Calendar };

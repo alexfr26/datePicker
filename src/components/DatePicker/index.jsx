@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState, useEffect, useReducer } from 'react';
 
 // Lib && Reducer
@@ -12,7 +13,7 @@ import { NavBlock } from '../NavBlock';
 // Style
 import { StyledDatePicker } from './style';
 
-export const DatePicker = ({ type = 'single', ...props }) => {
+const DatePicker = ({ type = 'single', ...props }) => {
     const [currCal, setCurrCal] = useState([]);
     const [pickedDates, dispatch] = useReducer(datePickerReducer, []);
     const [currDate, setCurrDate] = useState({ year: '', month: '' });
@@ -65,3 +66,9 @@ export const DatePicker = ({ type = 'single', ...props }) => {
         </StyledDatePicker>
     );
 };
+
+DatePicker.propTypes = {
+    type: PropTypes.oneOf(['single', 'range', 'multiRange']).isRequired,
+};
+
+export { DatePicker };

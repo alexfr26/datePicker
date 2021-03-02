@@ -30,6 +30,10 @@ const StyledCell = styled.td`
         border-radius: 5px;
     }
 
+    &.pickedInRange {
+        background-color: #daedf4;
+    }
+
     &.pickedStart {
         background-color: #0f5099;
         color: #fff;
@@ -42,10 +46,6 @@ const StyledCell = styled.td`
         color: #fff;
         font-weight: bold;
         border-radius: 0 5px 5px 0;
-    }
-
-    &.pickedInRange {
-        background-color: #daedf4;
     }
 `;
 
