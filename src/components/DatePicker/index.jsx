@@ -6,32 +6,28 @@ import { datePickerReducer } from '../../lib/reducer';
 
 // Components
 import { Calendar } from '../Calendar';
-import { Form } from '../Form';
-import { FlexWrapper } from '../FlexWrapper';
 import { Header } from '../Header';
+import { NavBlock } from '../NavBlock';
 
 // Style
 import { StyledDatePicker } from './style';
-import { Button } from '../Button';
 
 export const DatePicker = ({ type = 'single', ...props }) => {
     const [currCal, setCurrCal] = useState([]);
     const [pickedDates, dispatch] = useReducer(datePickerReducer, []);
-    const [currDate, setCurrDate] = useState({ year: null, month: null });
-    const [loading, setLoading] = useState(true);
+    const [currDate, setCurrDate] = useState({ year: '', month: '' });
 
     useEffect(() => {
         const { month, year } = getDate(new Date());
         setCurrDate({ year, month });
         setCurrCal(generateCalendar(year, month));
-        setLoading(false);
     }, []);
 
     useEffect(() => {
         setCurrCal(generateCalendar(currDate.year, currDate.month));
     }, [currDate]);
 
-    const handlerFormChanges = (e) => {
+    const handlerFormChange = (e) => {
         setCurrDate({ ...currDate, [e.target.name]: +e.target.value });
     };
 
@@ -50,29 +46,15 @@ export const DatePicker = ({ type = 'single', ...props }) => {
         dispatch({ type: type, payload: { timeStamp, dateLabel } });
     };
 
-    if (loading) return <h1>Loading!</h1>;
-
     return (
         <StyledDatePicker {...props}>
             <Header pickedDates={pickedDates} datePickerType={type} />
 
-            <FlexWrapper justify="space-evenly" margin="10px 0 5px 0">
-                <Button
-                    hoverShadow="2px 2px 2px black"
-                    onClick={() => handleMonthChange('-')}
-                >
-                    🢀
-                </Button>
-
-                <Form onFormChanged={handlerFormChanges} values={currDate} />
-
-                <Button
-                    hoverShadow="-2px 2px 2px black"
-                    onClick={() => handleMonthChange('+')}
-                >
-                    🢂
-                </Button>
-            </FlexWrapper>
+            <NavBlock
+                onBtnClick={handleMonthChange}
+                onFormChange={handlerFormChange}
+                currDate={currDate}
+            />
 
             <Calendar
                 dates={currCal}

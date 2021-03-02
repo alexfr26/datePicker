@@ -9,7 +9,8 @@ const AppWrapper = styled.div`
 const App = () => {
     return (
         <AppWrapper>
-            <DatePicker type="multiRange" />
+            {/* SUPPORTED TYPES: "single", "range", "multiRange" */}
+            <DatePicker type="single" />
         </AppWrapper>
     );
 };
