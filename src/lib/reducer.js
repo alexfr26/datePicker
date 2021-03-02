@@ -25,11 +25,7 @@ const datePickerReducer = (state = initialState, { type, payload }) => {
             const lastItem = state.slice(-1)[0];
 
             if (lastItem.length === 1) {
-                if (lastItem[0].timeStamp > payload.timeStamp) {
-                    return [...state.slice(0, -1), [payload, ...lastItem]];
-                }
-
-                return [...state.slice(0, -1), [...lastItem, payload]];
+                return [...state.slice(0, -1), orderItems(lastItem, payload)];
             }
 
             if (lastItem.length === 2) {

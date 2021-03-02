@@ -9,7 +9,7 @@ const AppWrapper = styled.div`
 const App = () => {
     return (
         <AppWrapper>
-            <DatePicker type="range" />
+            <DatePicker type="multiRange" />
         </AppWrapper>
     );
 };
