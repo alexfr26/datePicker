@@ -31,6 +31,7 @@ const Form = ({ values, onFormChange, ...props }) => {
                 options={CONSTANTS.YEARS}
                 name="year"
                 value={values.year}
+                valueType="value"
                 width={'30%'}
                 onChange={onFormChange}
             />

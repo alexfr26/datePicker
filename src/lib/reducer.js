@@ -32,6 +32,10 @@ const datePickerReducer = (state = initialState, { type, payload }) => {
                 return [...state, [payload]];
             }
 
+        case 'deleteDate':
+            const dateArrIdx = payload;
+            return [...state.slice(0, dateArrIdx), ...state.slice(dateArrIdx + 1)];
+
         default:
             return state;
     }

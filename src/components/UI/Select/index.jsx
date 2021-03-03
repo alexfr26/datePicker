@@ -20,8 +20,7 @@ const Select = ({ options, valueType, ...props }) => {
 
 Select.propTypes = {
     options: PropTypes.array.isRequired,
-    valueType: PropTypes.string,
-    valueType: PropTypes.oneOf(['idx', 'value']),
+    valueType: PropTypes.oneOf(['idx', 'value']).isRequired,
 };
 
 export { Select };

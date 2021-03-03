@@ -10,7 +10,7 @@ export const renderOptions = (arrOfLabels) => {
     return options;
 };
 
-export const renderContent = (dates, pickerType) => {
+export const renderContent = (dates, pickerType, onChangeCb) => {
     switch (pickerType) {
         case 'single':
             return <div className="single">{dates.length ? dates[0].dateLabel : ''}</div>;
@@ -23,7 +23,15 @@ export const renderContent = (dates, pickerType) => {
             return <div className="range">{content}</div>;
 
         case 'multiRange':
-            return <Select width="180px" options={renderOptions(dates)} />;
+            return (
+                <Select
+                    width="180px"
+                    options={renderOptions(dates)}
+                    valueType="idx"
+                    onChange={onChangeCb}
+                    defaultValue={0}
+                />
+            );
 
         default:
             return dates;

@@ -49,11 +49,19 @@ const DatePicker = ({ type = 'single', ...props }) => {
         dispatch({ type: type, payload: { timeStamp, dateLabel } });
     };
 
+    const handleDeletePickedDate = (dateArrIdx) => {
+        dispatch({ type: 'deleteDate', payload: dateArrIdx });
+    };
+
     if (loading) return <h3>Loading...</h3>;
 
     return (
         <StyledDatePicker {...props}>
-            <Header pickedDates={pickedDates} datePickerType={type} />
+            <Header
+                pickedDates={pickedDates}
+                datePickerType={type}
+                handleDeletePickedDate={handleDeletePickedDate}
+            />
 
             <NavBlock
                 onBtnClick={handleMonthChange}
