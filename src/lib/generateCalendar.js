@@ -30,8 +30,8 @@ const generateCalendar = (year, month) => {
     }
 
     let nextMonthDates = [];
-    const sliceNum = 7 - lastMonthDay;
     if (lastMonthDay < 7) {
+        const sliceNum = 7 - lastMonthDay;
         nextMonthDates = generateDates(year, month + 1, 'next').slice(0, sliceNum);
     }
 

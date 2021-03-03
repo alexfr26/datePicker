@@ -1,7 +1,9 @@
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { renderContent } from './helper';
+
 import { FlexWrapper } from '../UI/FlexWrapper';
-import { Select } from '../UI/Select';
 
 const StyledHeader = styled.div`
     div.single {
@@ -22,40 +24,6 @@ const StyledHeader = styled.div`
 `;
 
 const Header = ({ pickedDates, datePickerType, ...props }) => {
-    const renderOptions = (arrOfLabels) => {
-        let options = [[]];
-        if (arrOfLabels.length)
-            options = arrOfLabels.map(
-                (el) => `${el[0].dateLabel} - ${el[1] ? el[1].dateLabel : ''}`
-            );
-
-        return options;
-    };
-
-    const renderContent = (dates, pickerType) => {
-        switch (pickerType) {
-            case 'single':
-                return (
-                    <div className="single">{dates.length ? dates[0].dateLabel : ''}</div>
-                );
-
-            case 'range':
-                let content = '';
-                if (dates.length)
-                    content = `${dates[0].dateLabel} - ${
-                        dates[1] ? dates[1].dateLabel : ''
-                    }`;
-
-                return <div className="range">{content}</div>;
-
-            case 'multiRange':
-                return <Select width="180px" options={renderOptions(dates)} />;
-
-            default:
-                return pd;
-        }
-    };
-
     return (
         <FlexWrapper margin="10px auto 5px" width="90%" justify="space-around">
             <StyledHeader {...props}>
@@ -63,6 +31,26 @@ const Header = ({ pickedDates, datePickerType, ...props }) => {
             </StyledHeader>
         </FlexWrapper>
     );
+};
+
+Header.propTypes = {
+    pickedDates: PropTypes.oneOfType([
+        PropTypes.arrayOf(
+            PropTypes.shape({
+                timeStamp: PropTypes.number,
+                dataLabel: PropTypes.string,
+            })
+        ),
+        PropTypes.arrayOf(
+            PropTypes.arrayOf(
+                PropTypes.shape({
+                    timeStamp: PropTypes.number,
+                    dataLabel: PropTypes.string,
+                })
+            )
+        ),
+    ]),
+    datePickerType: PropTypes.oneOf(['single', 'range', 'multiRange']),
 };
 
 export { Header };

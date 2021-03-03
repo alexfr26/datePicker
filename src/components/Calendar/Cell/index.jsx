@@ -1,7 +1,8 @@
+import { memo } from 'react';
 import { StyledCell } from './style';
 
-const Cell = (props) => {
+const Cell = memo((props) => {
     return <StyledCell {...props} />;
-};
+});
 
 export { Cell };

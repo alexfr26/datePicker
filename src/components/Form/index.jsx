@@ -1,20 +1,24 @@
-import styled from 'styled-components';
-
 import { CONSTANTS } from '../../lib';
 
+// Components
 import { Select } from '../UI/Select';
-
-const StyledForm = styled.form`
-    display: flex;
-    justify-content: space-evenly;
-    align-items: stretch;
-    width: 60%;
-    height: 22px;
-`;
+import { FlexWrapper } from '../UI/FlexWrapper';
+import { useMemo } from 'react';
 
 const Form = ({ values, onFormChange, ...props }) => {
+    const wrapperProps = useMemo(
+        () => ({
+            width: '60%',
+            height: '22px',
+            justify: 'space-evenly',
+            align: 'stretch',
+            ...props,
+        }),
+        [props]
+    );
+
     return (
-        <StyledForm {...props}>
+        <FlexWrapper {...wrapperProps}>
             <Select
                 options={CONSTANTS.MONTHS}
                 name="month"
@@ -30,7 +34,7 @@ const Form = ({ values, onFormChange, ...props }) => {
                 width={'30%'}
                 onChange={onFormChange}
             />
-        </StyledForm>
+        </FlexWrapper>
     );
 };
 

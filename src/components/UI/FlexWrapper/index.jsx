@@ -6,6 +6,7 @@ const StyledFlexWrapper = styled.div`
     justify-content: ${(props) => props.justify || 'stretch'};
     align-items: ${(props) => props.align || 'stretch'};
     width: ${(props) => props.width || '100%'};
+    height: ${(props) => props.height || 'fit-content'};
     margin: ${(props) => props.margin || 0};
 `;
 

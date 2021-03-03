@@ -17,11 +17,13 @@ const DatePicker = ({ type = 'single', ...props }) => {
     const [currCal, setCurrCal] = useState([]);
     const [pickedDates, dispatch] = useReducer(datePickerReducer, []);
     const [currDate, setCurrDate] = useState({ year: '', month: '' });
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const { month, year } = getDate(new Date());
         setCurrDate({ year, month });
         setCurrCal(generateCalendar(year, month));
+        setLoading(false);
     }, []);
 
     useEffect(() => {
@@ -29,7 +31,7 @@ const DatePicker = ({ type = 'single', ...props }) => {
     }, [currDate]);
 
     const handlerFormChange = (e) => {
-        setCurrDate({ ...currDate, [e.target.name]: +e.target.value });
+        setCurrDate((currDate) => ({ ...currDate, [e.target.name]: +e.target.value }));
     };
 
     const handleMonthChange = (type) => {
@@ -46,6 +48,8 @@ const DatePicker = ({ type = 'single', ...props }) => {
         const dateLabel = createLabel(timeStamp);
         dispatch({ type: type, payload: { timeStamp, dateLabel } });
     };
+
+    if (loading) return <h3>Loading...</h3>;
 
     return (
         <StyledDatePicker {...props}>

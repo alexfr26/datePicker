@@ -1,3 +1,6 @@
+import { Cell } from '../Cell';
+import { Row } from '../Row';
+
 export const checkPicked = (cellKey, pDate, dpType) => {
     switch (dpType) {
         case 'single':
@@ -44,4 +47,42 @@ export const checkPicked = (cellKey, pDate, dpType) => {
         default:
             return '';
     }
+};
+
+const renderCells = (cells, pickedCells, dpType, handlerFn) => {
+    return cells.map((props) => {
+        const { value, key, ...restProps } = props;
+        const classes = pickedCells.length ? checkPicked(key, pickedCells, dpType) : '';
+        return (
+            <Cell
+                key={key}
+                className={classes}
+                onClick={() => handlerFn(key)}
+                {...restProps}
+            >
+                {value}
+            </Cell>
+        );
+    });
+};
+
+export const renderRows = (rows, pickedCells, dpType, handlerFn) => {
+    return rows.map((cells, idx) => {
+        const rowKey = `${idx}-${new Date().getTime()}`;
+        return (
+            <Row as="tr" key={rowKey}>
+                {renderCells(cells, pickedCells, dpType, handlerFn)}
+            </Row>
+        );
+    });
+};
+
+export const simpleCellsRender = (cells, props) => {
+    return cells.map((cellValue) => {
+        return (
+            <Cell key={cellValue} {...props}>
+                {cellValue}
+            </Cell>
+        );
+    });
 };
