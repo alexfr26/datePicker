@@ -5,8 +5,8 @@ import styled from 'styled-components';
 
 import { renderContent } from './helper';
 
-import { FlexWrapper } from '../UI/FlexWrapper';
-import { Button } from '../UI/Button';
+import FlexWrapper from '../UI/FlexWrapper';
+import Button from '../UI/Button';
 
 const StyledHeader = styled(FlexWrapper)`
     div.single {
@@ -29,8 +29,9 @@ const StyledHeader = styled(FlexWrapper)`
 const Header = ({ pickedDates, datePickerType, handleDeletePickedDate, ...props }) => {
     const [selectedDateIdx, setSelectedDateIdx] = useState(0);
 
-    const handleSelectDate = (e) => {
-        setSelectedDateIdx(Number(e.target.value));
+    const handleSelectDate = ({ target: { value } }) => {
+        if (Number(value) === selectedDateIdx) return;
+        setSelectedDateIdx(Number(value));
     };
 
     const onDeletePickedDate = () => {
@@ -42,11 +43,12 @@ const Header = ({ pickedDates, datePickerType, handleDeletePickedDate, ...props 
         <StyledHeader margin="10px auto 5px" width="90%" justify="center" {...props}>
             {renderContent(pickedDates, datePickerType, handleSelectDate)}
             <Button
-                bgColor="#fff"
-                activeBgColor="pink"
-                hoverShadow="2px 2px 2px black"
-                margin="0 0 0 10px"
                 onClick={onDeletePickedDate}
+                hoverShadow="2px 2px 2px black"
+                activeBgColor="pink"
+                bgColor="#fff"
+                margin="0 0 0 10px"
+                aria-label="Delete picked date"
             >
                 ❌
             </Button>
@@ -55,24 +57,16 @@ const Header = ({ pickedDates, datePickerType, handleDeletePickedDate, ...props 
 };
 
 Header.propTypes = {
-    pickedDates: PropTypes.oneOfType([
+    pickedDates: PropTypes.arrayOf(
         PropTypes.arrayOf(
             PropTypes.shape({
                 timeStamp: PropTypes.number,
                 dataLabel: PropTypes.string,
             })
-        ),
-        PropTypes.arrayOf(
-            PropTypes.arrayOf(
-                PropTypes.shape({
-                    timeStamp: PropTypes.number,
-                    dataLabel: PropTypes.string,
-                })
-            )
-        ),
-    ]),
+        )
+    ).isRequired,
     datePickerType: PropTypes.oneOf(['single', 'range', 'multiRange']).isRequired,
-    handleDeletePickedDate: PropTypes.func,
+    handleDeletePickedDate: PropTypes.func.isRequired,
 };
 
 export { Header };

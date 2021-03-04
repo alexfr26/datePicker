@@ -2,32 +2,24 @@ import PropTypes from 'prop-types';
 import { useState, useEffect, useReducer } from 'react';
 
 // Lib && Reducer
-import { generateCalendar, getDate, createLabel } from '../../lib';
-import { datePickerReducer } from '../../lib/reducer';
+import { generateCal, getDate, createLabel } from '../../lib';
+import datePickerReducer from '../../lib/reducer';
 
 // Components
 import { Calendar } from '../Calendar';
 import { Header } from '../Header';
-import { NavBlock } from '../NavBlock';
+import NavBlock from '../NavBlock';
 
 // Style
-import { StyledDatePicker } from './style';
+import StyledDatePicker from './style';
 
 const DatePicker = ({ type = 'single', ...props }) => {
-    const [currCal, setCurrCal] = useState([]);
+    const [currDate, setCurrDate] = useState(getDate(new Date()));
+    const [currCal, setCurrCal] = useState(generateCal(currDate.year, currDate.month));
     const [pickedDates, dispatch] = useReducer(datePickerReducer, []);
-    const [currDate, setCurrDate] = useState({ year: '', month: '' });
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const { month, year } = getDate(new Date());
-        setCurrDate({ year, month });
-        setCurrCal(generateCalendar(year, month));
-        setLoading(false);
-    }, []);
-
-    useEffect(() => {
-        setCurrCal(generateCalendar(currDate.year, currDate.month));
+        setCurrCal(generateCal(currDate.year, currDate.month));
     }, [currDate]);
 
     const handlerFormChange = (e) => {
@@ -42,8 +34,7 @@ const DatePicker = ({ type = 'single', ...props }) => {
 
     const handleDatePicked = (timeStamp) => {
         const { month, year } = getDate(new Date(timeStamp));
-        if (year !== currDate.year || month !== currDate.month)
-            setCurrDate({ year, month });
+        if (year !== currDate.year || month !== currDate.month) setCurrDate({ year, month });
 
         const dateLabel = createLabel(timeStamp);
         dispatch({ type: type, payload: { timeStamp, dateLabel } });
@@ -52,8 +43,6 @@ const DatePicker = ({ type = 'single', ...props }) => {
     const handleDeletePickedDate = (dateArrIdx) => {
         dispatch({ type: 'deleteDate', payload: dateArrIdx });
     };
-
-    if (loading) return <h3>Loading...</h3>;
 
     return (
         <StyledDatePicker {...props}>

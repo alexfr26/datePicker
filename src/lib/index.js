@@ -1,3 +1,5 @@
-export { CONSTANTS } from './constants';
-export { getDate, createLabel } from './funcs';
-export { generateCalendar } from './generateCalendar';
+import CONSTANTS from './constants';
+import generateCal from './generateCal';
+import { createLabel, getDate } from './funcs';
+
+export { CONSTANTS, createLabel, getDate, generateCal };

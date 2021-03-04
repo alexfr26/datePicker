@@ -1,23 +1,20 @@
-const initialState = [];
-
-const orderItems = (stateItem, payloadItem) => {
-    return stateItem[0].timeStamp > payloadItem.timeStamp
+const orderItems = (stateItem, payloadItem) =>
+    stateItem[0].timeStamp > payloadItem.timeStamp
         ? [payloadItem, ...stateItem]
         : [...stateItem, payloadItem];
-};
 
-const datePickerReducer = (state = initialState, { type, payload }) => {
+export default (state = [[]], { type, payload }) => {
     switch (type) {
         case 'single':
-            return [payload];
+            return [[payload]];
 
         case 'range':
-            if (state.length === 0 || state.length === 2) {
-                return [payload];
-            }
-            return orderItems(state, payload);
+            return state.length === 0 || state[0].length === 2
+                ? [[payload]]
+                : [orderItems(...state, payload)];
 
         case 'multiRange':
+            console.log(state.length, payload);
             if (state.length === 0) {
                 return [[payload]];
             }
@@ -33,12 +30,9 @@ const datePickerReducer = (state = initialState, { type, payload }) => {
             }
 
         case 'deleteDate':
-            const dateArrIdx = payload;
-            return [...state.slice(0, dateArrIdx), ...state.slice(dateArrIdx + 1)];
+            return [...state.slice(0, payload), ...state.slice(payload + 1)];
 
         default:
             return state;
     }
 };
-
-export { datePickerReducer };

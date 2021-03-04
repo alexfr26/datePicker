@@ -10,44 +10,39 @@ const generateDates = (year, month, type = 'curr') => {
     const monthDays = getMonthNumOfDays(year, month);
     return Array(monthDays)
         .fill(1)
-        .map((val, idx) => ({ value: val + idx, type }));
+        .map((value, idx) => ({ value: value + idx, type }));
 };
 
-const generateTimeStamp = (yy, mm, { value, type }) => {
+const generateTimestamp = (yy, mm, { value, type }) => {
     const dateTypes = { prev: -1, curr: 0, next: 1 };
     return new Date(yy, mm + dateTypes[type], value).getTime();
 };
 
-const generateCalendar = (year, month) => {
+export default (year, month) => {
     const currMonthDates = generateDates(year, month);
     const fitstMonthDay = getNumOfDay(year, month, 1);
     const lastMonthDay = getNumOfDay(year, month, currMonthDates.length);
 
-    let prevMonthDates = [];
-    if (fitstMonthDay > 1) {
-        const sliceNum = fitstMonthDay - 1;
-        prevMonthDates = generateDates(year, month - 1, 'prev').slice(-sliceNum);
-    }
+    const otherDays = {
+        prevMonth:
+            fitstMonthDay > 1
+                ? generateDates(year, month - 1, 'prev').slice(-(fitstMonthDay - 1))
+                : [],
+        nextMonth:
+            lastMonthDay < 7
+                ? generateDates(year, month + 1, 'next').slice(0, 7 - lastMonthDay)
+                : [],
+    };
 
-    let nextMonthDates = [];
-    if (lastMonthDay < 7) {
-        const sliceNum = 7 - lastMonthDay;
-        nextMonthDates = generateDates(year, month + 1, 'next').slice(0, sliceNum);
-    }
-
-    const dates = [...prevMonthDates, ...currMonthDates, ...nextMonthDates];
-    const numOfWeeks = dates.length / 7;
+    const dates = [...otherDays.prevMonth, ...currMonthDates, ...otherDays.nextMonth];
 
     return dates.reduce((weeks, nextDate, dateIdx) => {
         const weekIdx = Math.floor(dateIdx / 7);
-        const key = generateTimeStamp(year, month, nextDate);
 
         return [
             ...weeks.slice(0, weekIdx),
-            [...weeks[weekIdx], { ...nextDate, key }],
+            [...weeks[weekIdx], { ...nextDate, key: generateTimestamp(year, month, nextDate) }],
             ...weeks.slice(weekIdx + 1),
         ];
-    }, Array(numOfWeeks).fill([]));
+    }, Array(dates.length / 7).fill([]));
 };
-
-export { generateCalendar };

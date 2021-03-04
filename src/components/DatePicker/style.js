@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const StyledDatePicker = styled.div`
+export default styled.div`
     display: flex;
     flex-direction: column;
     width: 320px;

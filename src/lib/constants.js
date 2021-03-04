@@ -1,4 +1,4 @@
-const CONSTANTS = {
+export default {
     _DAYS: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
 
     _MONTHS: [
@@ -32,5 +32,3 @@ const CONSTANTS = {
         return this._YEARS;
     },
 };
-
-export { CONSTANTS };

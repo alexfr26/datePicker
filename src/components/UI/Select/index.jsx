@@ -1,26 +1,28 @@
 import PropTypes from 'prop-types';
 
-import { Option } from '../Option';
+import Option from '../Option';
 
-import { StyledSelect } from './style';
+import StyledSelect from './style';
 
-const Select = ({ options, valueType, ...props }) => {
-    const renderOptions = (options) => {
-        return options.map((value, valueIdx) => {
-            return (
+const Select = ({ options, valueType = 'value', ...props }) => {
+    return (
+        <StyledSelect {...props}>
+            {options.map((value, valueIdx) => (
                 <Option value={valueType === 'idx' ? valueIdx : value} key={value}>
                     {value}
                 </Option>
-            );
-        });
-    };
-
-    return <StyledSelect {...props}>{renderOptions(options)}</StyledSelect>;
+            ))}
+        </StyledSelect>
+    );
 };
 
 Select.propTypes = {
-    options: PropTypes.array.isRequired,
-    valueType: PropTypes.oneOf(['idx', 'value']).isRequired,
+    options: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.string),
+        PropTypes.arrayOf(PropTypes.number),
+        PropTypes.arrayOf(PropTypes.array),
+    ]).isRequired,
+    valueType: PropTypes.oneOf(['idx', 'value']),
 };
 
-export { Select };
+export default Select;

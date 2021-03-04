@@ -10,7 +10,7 @@ const App = () => {
     return (
         <AppWrapper>
             {/* SUPPORTED TYPES: "single", "range", "multiRange" */}
-            <DatePicker type="multiRange" />
+            <DatePicker type="range" />
         </AppWrapper>
     );
 };

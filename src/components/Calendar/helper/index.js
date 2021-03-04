@@ -2,25 +2,33 @@ import { Cell } from '../Cell';
 import { Row } from '../Row';
 
 export const checkPicked = (cellKey, pDate, dpType) => {
+    console.log(pDate);
     switch (dpType) {
         case 'single':
             return cellKey === pDate[0].timeStamp ? 'picked' : '';
 
         case 'range':
-            const len = pDate.length;
-            if (len === 1) {
-                return cellKey === pDate[0].timeStamp ? 'pickedStart' : '';
+            let classes1 = '';
+            for (let tuple of pDate) {
+                const len = tuple.length;
+
+                if (len === 1) {
+                    classes1 += cellKey === tuple[0].timeStamp ? ' pickedStart' : '';
+                }
+
+                if (len === 2) {
+                    classes1 +=
+                        cellKey === tuple[0].timeStamp
+                            ? ' pickedStart'
+                            : cellKey === tuple[1].timeStamp
+                            ? ' pickedEnd'
+                            : cellKey > tuple[0].timeStamp && cellKey < tuple[1].timeStamp
+                            ? ' pickedInRange'
+                            : '';
+                }
             }
 
-            if (len === 2) {
-                return cellKey === pDate[0].timeStamp
-                    ? 'pickedStart'
-                    : cellKey === pDate[1].timeStamp
-                    ? 'pickedEnd'
-                    : cellKey > pDate[0].timeStamp && cellKey < pDate[1].timeStamp
-                    ? 'pickedInRange'
-                    : '';
-            }
+            return classes1;
 
         case 'multiRange':
             let classes = '';
@@ -54,12 +62,7 @@ const renderCells = (cells, pickedCells, dpType, handlerFn) => {
         const { value, key, ...restProps } = props;
         const classes = pickedCells.length ? checkPicked(key, pickedCells, dpType) : '';
         return (
-            <Cell
-                key={key}
-                className={classes}
-                onClick={() => handlerFn(key)}
-                {...restProps}
-            >
+            <Cell key={key} className={classes} onClick={() => handlerFn(key)} {...restProps}>
                 {value}
             </Cell>
         );

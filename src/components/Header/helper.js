@@ -1,32 +1,22 @@
-import { Select } from '../UI/Select';
+import Select from '../UI/Select';
 
-export const renderOptions = (arrOfLabels) => {
-    let options = [[]];
-    if (arrOfLabels.length)
-        options = arrOfLabels.map(
-            (el) => `${el[0].dateLabel} - ${el[1] ? el[1].dateLabel : ''}`
-        );
-
-    return options;
-};
+const extractLabels = (datesArr, sep = '') =>
+    datesArr.map((dateArr) => dateArr.map((dateObj) => dateObj.dateLabel).join(sep));
 
 export const renderContent = (dates, pickerType, onChangeCb) => {
     switch (pickerType) {
         case 'single':
-            return <div className="single">{dates.length ? dates[0].dateLabel : ''}</div>;
+            return <div className="single">{extractLabels(dates)}</div>;
 
         case 'range':
-            let content = '';
-            if (dates.length)
-                content = `${dates[0].dateLabel} - ${dates[1] ? dates[1].dateLabel : ''}`;
-
-            return <div className="range">{content}</div>;
+            return <div className="range">{extractLabels(dates, ' - ')}</div>;
 
         case 'multiRange':
+            console.log(dates);
             return (
                 <Select
                     width="180px"
-                    options={renderOptions(dates)}
+                    options={extractLabels(dates, ' - ')}
                     valueType="idx"
                     onChange={onChangeCb}
                     defaultValue={0}
@@ -34,6 +24,6 @@ export const renderContent = (dates, pickerType, onChangeCb) => {
             );
 
         default:
-            return dates;
+            return [];
     }
 };

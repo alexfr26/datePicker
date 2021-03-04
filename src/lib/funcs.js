@@ -1,13 +1,10 @@
-const getDate = (data) => {
-    const year = data.getFullYear();
-    const month = data.getMonth();
-    const date = data.getDate();
-    return { date, month, year };
-};
+const getDate = (date) => ({
+    date: date.getDate(),
+    month: date.getMonth(),
+    year: date.getFullYear(),
+});
 
-const padStartZero = (n) => {
-    return `${n}`.length === 1 ? `0${n}` : n;
-};
+const padStartZero = (n) => (`${n}`.length === 1 ? `0${n}` : n);
 
 const createLabel = (timeStamp) => {
     const { date: dd, month: mm, year: yy } = getDate(new Date(timeStamp));

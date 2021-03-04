@@ -1,5 +1,1 @@
-const Option = (props) => {
-    return <option {...props} />;
-};
-
-export { Option };
+export default (props) => <option {...props} />;
